@@ -1,118 +1,75 @@
-# 📌 Test Technique Drupal 10 – Développeur Backend
+<img alt="Drupal Logo" src="https://www.drupal.org/files/Wordmark_blue_RGB.png" height="60px">
 
-**Durée estimée** : 1h30 à 2h30 (à répartir selon votre rythme).
+Drupal is an open source content management platform supporting a variety of
+websites ranging from personal weblogs to large community-driven websites. For
+more information, visit the Drupal website, [Drupal.org][Drupal.org], and join
+the [Drupal community][Drupal community].
 
-**Objectif** : Évaluer vos compétences en développement **Drupal 10**, **PHP**, et **architecture de modules custom**.
+## Contributing
 
----
----
----
+Drupal is developed on [Drupal.org][Drupal.org], the home of the international
+Drupal community since 2001!
 
-***Consignes Générales :***
-   
-- Respectez les conventions Drupal : nommage des classes (PSR-4), fichiers, et méthodes.
+[Drupal.org][Drupal.org] hosts Drupal's [GitLab repository][GitLab repository],
+its [issue queue][issue queue], and its [documentation][documentation]. Before
+you start working on code, be sure to search the [issue queue][issue queue] and
+create an issue if your aren't able to find an existing issue.
 
-- Optimisez votre code : vous pouvez installer Composer pour gérer le cache Drupal si besoin et drush pour installation / activation module
+Every issue on Drupal.org automatically creates a new community-accessible fork
+that you can contribute to. Learn more about the code contribution process on
+the [Issue forks & merge requests page][issue forks].
 
-- Documentation : n'hésitez pas à ajouter des commentaires pertinents dans votre code si besoin.
+## Usage
 
-- Livraison : poussez votre code dans une branche dédiée ;
-  
+For a brief introduction, see [USAGE.txt](/core/USAGE.txt). You can also find
+guides, API references, and more by visiting Drupal's [documentation
+page][documentation].
 
-## **🔹 Exercice 1 : Module de Statistiques de Contenu**
-**Objectif** : Créer un module custom qui **compte automatiquement** le nombre de contenus par type (`formations`, `actualités`, `événements`) et affiche un tableau récapitulatif dans une page d’administration.
+You can quickly extend Drupal's core feature set by installing any of its
+[thousands of free and open source modules][modules]. With Drupal and its
+module ecosystem, you can often build most or all of what your project needs
+before writing a single line of code.
 
-### **📋 Tâches à réaliser**
-1. **Créer manuellement les types de contenu** :
-   - **Formation** (`machine_name: programmes`)
-     - Champs : `title`, `body` (texte long), `cost` (date).
-   - **Actualité** (`machine_name: news`)
-     - Champs : `title`, `body`, `publication_date` (date), `is_homepage` (boolean).
-   - **Événement** (`machine_name: events`)
-     - Champs : `title`, `description` (texte long), `start_date` (date), `end_date` (date), `location` (liste de sélection : Rouen, Paris, Reims).
+## Changelog
 
-2. **Créer au moins 2-3 contenus par type** (via `/node/add/programmes`, `/node/add/news`, `/node/add/events`).
+Drupal keeps detailed [change records][changelog]. You can search Drupal's
+changes for a record of every notable breaking change and new feature since
+2011.
 
-3. **Développer un module custom `content_stats`** avec :
-   - Un **service** (`StatsService`) qui :
-     - Compte le **nombre total** de contenus par type.
-     - Compte le **nombre de contenus publiés/non publiés** par type.
-   - Un **contrôleur** (`StatsController`) qui :
-     - Affiche un **tableau récapitulatif** sur la page `/admin/content/stats`.
-     - Format attendu :
-       ```
-       Type          Total | Publié | Non publié
-       ---------------------------------------------
-       formation   | 5     | 4      | 1
-       actualite   | 3     | 3      | 0
-       evenement   | 2     | 1      | 1
-       ```
+## Security
 
-   - Une **route** (`/admin/content/stats`) accessible depuis le menu d’administration.
+For a list of security announcements, see the [Security advisories
+page][Security advisories] (available as [an RSS feed][security RSS]). This
+page also describes how to subscribe to these announcements via email.
 
-5. **Activer le module** et vérifier que la page `/admin/content/stats` fonctionne.
+For information about the Drupal security process, or to find out how to report
+a potential security issue to the Drupal security team, see the [Security team
+page][security team].
 
----
----
----
+## Need a helping hand?
 
-## **🔹 Exercice 2 : Filtrage des Événements par Date et Catégorie**
-**Objectif** : Ajouter une **taxonomie de catégories** aux événements et créer une page pour les filtrer par **date** et **catégorie**.
+Visit the [Support page][support] or browse [over a thousand Drupal
+providers][service providers] offering design, strategy, development, and
+hosting services.
 
-### **📋 Tâches à réaliser**
-1. **Créer un vocabulaire de taxonomie** :
-   - Nom : **Catégorie** (`machine_name: category`).
-   - Ajouter les **termes** :
-     - Conférence
-     - Online
-     - Webinaire
+## Legal matters
 
-2. **Ajouter un champ de référence à la taxonomie** au type de contenu **Événement** :
-   - Nom du champ : **Catégorie** (`field_category`).
-   - Type : **Référence à un terme de taxonomie** (vocabulaire `Catégory`).
-   - Autoriser **plusieurs valeurs**.
+Know your rights when using Drupal by reading Drupal core's
+[license](/core/LICENSE.txt).
 
-3. **Alimenter les événements existants** avec des catégories (au moins 1-2 par terme).
+Learn about the [Drupal trademark and logo policy here][trademark].
 
-4. **Créer une page de filtrage** (`/events`) **au choix** :
-   - **Option A : Avec Views** :
-     - Créer une **vue** (`Filtre Événements`) qui :
-       - Affiche une **liste des événements** (titre, date, catégorie).
-       - Ajoute un **formulaire de filtre** pour :
-         - **Date** (filtre "à partir de" ou "avant/après").
-         - **Catégorie** (dropdown ou checkboxes).
-       - Définir le chemin de la page sur `/events`.
-   - **Option B : Avec un contrôleur custom** :
-     - Créer un **module `event_filter`** avec :
-       - Un **formulaire** (`EventFilterForm`) pour filtrer par date et catégorie.
-       - Un **contrôleur** (`EventFilterController`) qui :
-         - Récupère les événements filtrés (via `EntityQuery`).
-         - Affiche les résultats dans un tableau.
-       - Une **route** `/events`.
-
-5. **Tester** que le filtrage fonctionne correctement.
-
----
----
----
-
-## **🔹 Exercice 3 (Bonus) : API REST pour les Contenus**
-**Objectif** : Créer un module custom qui **expose des endpoints REST** (GET) pour récupérer les contenus (formations, actualités, événements) au format JSON.
-
-### **📋 Tâches à réaliser**
-1. **Créer un module `content_api`** avec :
-   - **3 ressources REST** (une par type de contenu) :
-     - `/api/programmes` → Liste toutes les formations.
-     - `/api/news` → Liste toutes les actualités.
-     - `/api/events` → Liste tous les événements.
-   - Chaque endpoint doit retourner un **JSON** avec tous les champs :
-     - `id` (nid du nœud)
-     - `title` (titre du contenu)
-     - `body` (corps du contenu, si applicable)
-     - `date` (date associée, si applicable)
-
-3. **Tester les endpoints** avec `curl` ou Postman :
-   ```bash
-   curl http://url-du-site/api/programmes
-   curl http://url-du-site/api/news
-   curl http://url-du-site/api/events
+[Drupal.org]: https://www.drupal.org
+[Drupal community]: https://www.drupal.org/community
+[GitLab repository]: https://git.drupalcode.org/project/drupal
+[issue queue]: https://www.drupal.org/project/issues/drupal
+[issue forks]: https://www.drupal.org/drupalorg/docs/gitlab-integration/issue-forks-merge-requests
+[documentation]: https://www.drupal.org/documentation
+[changelog]: https://www.drupal.org/list-changes/drupal
+[modules]: https://www.drupal.org/project/project_module
+[security advisories]: https://www.drupal.org/security
+[security RSS]: https://www.drupal.org/security/rss.xml
+[security team]: https://www.drupal.org/drupal-security-team
+[service providers]: https://www.drupal.org/drupal-services
+[support]: https://www.drupal.org/support
+[trademark]: https://www.drupal.com/trademark
