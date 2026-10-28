@@ -2,8 +2,6 @@
 
 **Durée estimée** : 1h30 à 2h30 (à répartir selon votre rythme).
 
-***Code à pousser vendredi 30 Octobre 16h00 au plus tard***
-
 **Objectif** : Évaluer vos compétences en développement **Drupal 10**, **PHP**, et **architecture de modules custom**.
 
 ---
